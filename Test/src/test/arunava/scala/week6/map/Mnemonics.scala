@@ -16,14 +16,9 @@ object Mnemonics {
   def wordToNumber(word: String): String = word.toUpperCase() map characterNumberMap // same as word.toUpperCase() map (characterNumberMap(_)), here _ is inferred
   def numberToWordList: Map[String, List[String]] = (wordList groupBy wordToNumber) withDefaultValue List() // short-hand of wordList groupBy (wordToNumber(_))
   def translate(number: String): Set[List[String]] = {
-    //println(number)
     if (number.isEmpty()) Set(List())
     else {
-      (1 to number.length flatMap (i => {
-        //println("\t" + (number take i) + " / " + (number drop i))
-        numberToWordList(number take i) flatMap (word => translate(number drop i) map (word :: _))
-      })) toSet
-      //(1 to number.length()) map (n => (numberToWordList(number take n) map (w => translate(number drop n) map (w :: _)))
+      (1 to number.length flatMap (i => (numberToWordList(number take i) flatMap (word => translate(number drop i) map (word :: _))))) toSet
     }
   }
 
@@ -55,8 +50,8 @@ object Mnemonics {
   }
   
   def main(args: Array[String]): Unit = {
-    //val number = "7225247386"
-    val number = "9679631807"
+    val number = "7225247386"
+    //val number = "9679631807"
     solveWithMap(number)
     solveWithFor(number)
   }
