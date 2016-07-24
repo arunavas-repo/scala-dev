@@ -14,12 +14,21 @@ object Mnemonics {
   lazy val characterNumberMap = phoneCharacterMap flatMap { case (k, v) => v map (_ -> k) }
 
   def wordToNumber(word: String): String = word.toUpperCase() map characterNumberMap // same as word.toUpperCase() map (characterNumberMap(_)), here _ is inferred
-  def numberToWordList: Map[String, List[String]] = (wordList groupBy wordToNumber) withDefaultValue List() // short-hand of wordList groupBy (wordToNumber(_))
+  val numberToWordList: Map[String, List[String]] = (wordList groupBy wordToNumber) withDefaultValue List() // short-hand of wordList groupBy (wordToNumber(_))
   def translate(number: String): Set[List[String]] = {
     if (number.isEmpty()) Set(List())
     else {
       (1 to number.length flatMap (i => (numberToWordList(number take i) flatMap (word => translate(number drop i) map (word :: _))))) toSet
     }
+  }
+  
+  def translateTailRec(number: String): Set[List[String]] = {
+    def translateNumber(num: String, curr: List[String], rest: Set[List[String]]): Set[List[String]] = num match {
+      case null => rest + curr
+      case n => Set()
+    }
+    
+    translateNumber(number, Nil, Set())
   }
 
   def encode(number: String): Set[List[String]] = {

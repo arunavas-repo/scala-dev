@@ -4,13 +4,19 @@ import scala.annotation.tailrec
 
 object KnightShorteshPath {
   def main(args: Array[String]): Unit = {
-    println((0, 0) + " -> " + findKSP((0, 0)))
-    println("===========================")
-    println((3, 3) + " -> " + findKSP((3, 3)))
-    println("===========================")
-    println((4, 5) + " -> " + findKSP((4, 5)))
-    println("===========================")
-    println((7, 7) + " -> " + findKSP((7, 7)))
+    //solution((0, 0))
+    //solution((3, 3))
+    //solution((4, 5))
+    //solution((7, 7))
+    solution(107, 107)
+  }
+  
+  def solution(dest: (Int, Int)) = {
+    val startTime = System.currentTimeMillis()
+    val solution = findKSP(dest)
+    val endTime = System.currentTimeMillis()
+    println("Time Taken: " + ((endTime - startTime) / 1000) + " seconds, " + ((endTime - startTime) % 1000))
+    println(dest + ": " + solution)
   }
 
   def findKSP(dest: (Int, Int)): Int = {
