@@ -1,5 +1,7 @@
 package test.arunava.scala.week5.list
 
+import scala.annotation.tailrec
+
 object ForAllExists {
   def main(args: Array[String]): Unit = {
     println(isPrimeForAll(9))
@@ -15,6 +17,13 @@ object ForAllExists {
     println(existsFilter(list)(_ <= 0))
     println(forAllFilter(list)(_ >= -10))
     println(existsFilter(list)(_ <= -10))
+    println(dropWhile(list, (_ < 0)))
+  }
+  
+  @tailrec
+  def dropWhile(list: List[Int], p: Int => Boolean): List[Int] = list match {
+    case Nil => Nil
+    case x :: xs => if (!p(x)) list else dropWhile(xs, p);
   }
   
   def isPrimeForAll(num: Int): Boolean = List.range(2, num) forall(num % _ != 0)
