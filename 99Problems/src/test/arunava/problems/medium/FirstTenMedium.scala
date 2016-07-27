@@ -1,5 +1,7 @@
 package test.arunava.problems.medium
 
+import java.util.Collections
+
 import test.arunava.problems.easy.FirstTenEasy
 
 import scala.annotation.tailrec
@@ -9,6 +11,7 @@ import scala.annotation.tailrec
   */
 class FirstTenMedium {
   lazy val util = new FirstTenEasy
+  Collections.synchronizedMap()
   // Flatten a nested list structure. (medium)
   /*
   // Without tailrec
@@ -32,13 +35,26 @@ class FirstTenMedium {
     case Nil => Nil
     case h :: t => h :: compress(list dropWhile(_ == h))
   }*/
-  final def compress[A](list: List[A]): List[A] = {
+  //With dropWhile
+  /*final def compress[A](list: List[A]): List[A] = {
     @tailrec
     def doCompress(lst: List[A], compressedList: List[A]): List[A] = lst match {
       case Nil => compressedList
       case h :: t => doCompress(lst dropWhile(_ == h), h :: compressedList)
     }
     util.reverse(doCompress(list, Nil))
+  }*/
+  //Without dropWhile
+  final def compress[A](list: List[A]): List[A] = {
+    @tailrec
+    def doCompress(lst: List[A], compressedList: List[A]): List[A] = lst match {
+      case Nil => compressedList
+      case h :: t => t match {
+        case Nil => h :: compressedList
+        case th :: tt => if (h == th) doCompress(t, compressedList) else doCompress(t, h :: compressedList)
+      }
+    }
+    doCompress(list, Nil)
   }
 
   // Pack consecutive duplicates of list elements into sublists. (medium)
