@@ -70,5 +70,35 @@ class FirstTenEasy {
     }
     reverse(doEncode(list, Nil))
   }
+  
+  //Duplicate the elements of a list. (easy)
+  final def duplicate[A](list: List[A]): List[A] = {
+    @tailrec
+    def doDuplicate(lst: List[A], res: List[A]): List[A] = lst match {
+      case Nil => res
+      case h :: t => doDuplicate(t, h :: (h :: res))
+    }
+    reverse(doDuplicate(list, Nil))
+  }
+  
+  //Split a list into two parts; the length of the first part is given. (easy)
+  final def split[A](list: List[A], length: Int): (List[A], List[A]) = {
+    @tailrec
+    def doSplit(p1: List[A], p2: List[A], acc: Int): (List[A], List[A]) = p2 match {
+      case Nil => (reverse(p1), p2)
+      case h :: t => if (acc >= length) (reverse(p1), p2) else doSplit(h :: p1, t, acc + 1)
+    }
+    doSplit(Nil, list, 0);
+  }
+  
+  //Remove the K'th element from a list. (easy)
+  final def removeAt[A](n: Int, list: List[A]): List[A] = {
+    @tailrec
+    def remove(prefix: List[A], suffix: List[A], acc: Int): List[A] = suffix match {
+      case Nil => reverse(prefix)
+      case x :: xs => if (acc == n) (reverse(prefix) foldRight(xs))(_ :: _) else remove(x :: prefix, xs, acc + 1)
+    }
+    remove(Nil, list, 0)
+  }
 
 }
